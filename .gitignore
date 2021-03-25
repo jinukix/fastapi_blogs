@@ -151,6 +151,7 @@ Thumbs.db #thumbnail cache on Windows
 
 ### vscode ###
 .vscode/*
+.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -160,3 +161,4 @@ Thumbs.db #thumbnail cache on Windows
 # End of https://www.toptal.com/developers/gitignore/api/python,vscode
 
 note
+test.py
