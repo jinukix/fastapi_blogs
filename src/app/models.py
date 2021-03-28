@@ -1,8 +1,5 @@
-from sqlalchemy.sql.expression import column
-from sqlalchemy.sql.functions import char_length
 from .database import Base
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
 
 
 class Blog(Base):
