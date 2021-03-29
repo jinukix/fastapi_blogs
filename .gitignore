@@ -161,5 +161,4 @@ Thumbs.db #thumbnail cache on Windows
 # End of https://www.toptal.com/developers/gitignore/api/python,vscode
 
 note
-test.py
-database.py
+config.py
