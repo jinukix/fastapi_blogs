@@ -1,4 +1,4 @@
-from fastapi import Depends
+from fastapi import Depends, status
 from fastapi import APIRouter
 from sqlalchemy.orm import Session
 
@@ -12,8 +12,9 @@ router = APIRouter(
 )
 
 
-@router.post("/")
+@router.post("/", status_code=status.HTTP_201_CREATED)
 def create_user(req: schemas.User, db: Session = Depends(get_db)):
+
     """
     `회원가입 API`\n
 
@@ -23,8 +24,9 @@ def create_user(req: schemas.User, db: Session = Depends(get_db)):
     return user.create(req, db)
 
 
-@router.get("/{id}", response_model=schemas.ShowUser)
+@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ShowUser)
 def get_user(id: int, db: Session = Depends(get_db)):
+
     """
     `유저 검색 API`\n
 
