@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
 
@@ -13,9 +15,9 @@ def get(id: int, db: Session):
     return blog
 
 
-def get_all(db: Session):
+def get_all(db: Session, offset: Optional[int] = 0, limit: Optional[int] = 10):
     blogs = db.query(models.Blog).all()
-    return blogs
+    return blogs[offset:limit]
 
 
 def create(req: schemas.Blog, current_user: schemas.User, db: Session):

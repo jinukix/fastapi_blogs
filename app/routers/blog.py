@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import Depends, status
 from fastapi import APIRouter
@@ -17,25 +17,47 @@ router = APIRouter(
 
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[schemas.ShowBlog])
-def all(db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_user)):
-    return blog.get_all(db)
+async def all(
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
+    offset: Optional[int] = 0,
+    limit: Optional[int] = 10,
+):
+    return blog.get_all(db, offset, limit)
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-def create(req: schemas.Blog, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_user)):
+async def create(
+    req: schemas.Blog,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
+):
     return blog.create(req, current_user, db)
 
 
 @router.delete("/", status_code=status.HTTP_200_OK)
-def destroy(id: int, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_user)):
+async def destroy(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
+):
     return blog.destroy(id, db)
 
 
 @router.put("/{id}", status_code=status.HTTP_202_ACCEPTED)
-def update(id: int, req: schemas.Blog, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_user)):
+async def update(
+    id: int,
+    req: schemas.Blog,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
+):
     return blog.put(id, req, db)
 
 
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ShowBlog)
-def show(id: int, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_user)):
+async def show(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
+):
     return blog.get(id, db)

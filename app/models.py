@@ -2,6 +2,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import (
     Column,
     Integer,
+    Float,
     String,
     ForeignKey,
     Enum,
@@ -37,3 +38,10 @@ class User(Base, BaseMixin):
     gender = Column(Enum("Male", "FeMale"))
 
     blogs = relationship("Blog", back_populates="creator")
+
+
+class Product(Base, BaseMixin):
+    __tablename__ = "products"
+
+    name = Column(String(40))
+    price = Column(Float)

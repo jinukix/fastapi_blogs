@@ -13,7 +13,7 @@ router = APIRouter(
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-def create_user(req: schemas.User, db: Session = Depends(get_db)):
+async def create_user(req: schemas.User, db: Session = Depends(get_db)):
 
     """
     `회원가입 API`\n
@@ -25,7 +25,7 @@ def create_user(req: schemas.User, db: Session = Depends(get_db)):
 
 
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ShowUser)
-def get_user(id: int, db: Session = Depends(get_db)):
+async def get_user(id: int, db: Session = Depends(get_db)):
 
     """
     `유저 검색 API`\n

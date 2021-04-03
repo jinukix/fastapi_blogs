@@ -57,3 +57,11 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     user_id: Optional[int] = None
+
+
+class Product(BaseModel):
+    name: str
+    price: float
+
+    class Config:
+        orm_mode = True

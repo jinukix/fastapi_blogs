@@ -1,10 +1,11 @@
-from datetime import datetime, timedelta
 from jose import jwt, JWTError
+from datetime import datetime, timedelta
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, status
 from fastapi.security import OAuth2PasswordBearer
+from fastapi.exceptions import HTTPException
 
-from app import schemas
+from app import models, schemas
 from app.config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 
 
@@ -14,14 +15,6 @@ credentials_exception = HTTPException(
     detail="Could not validate credentials",
     headers={"WWW-Authenticate": "Bearer"},
 )
-
-
-def create_access_token(data: dict):
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
 
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
@@ -34,3 +27,12 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
         return token_data
     except JWTError:
         raise credentials_exception
+
+
+def create_access_token(user: models.User):
+    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode = {"user_id": user.id}
+    to_encode.update({"exp": expire})
+    access_token = jwt.encode(to_encode, key=SECRET_KEY, algorithm=ALGORITHM)
+
+    return access_token
